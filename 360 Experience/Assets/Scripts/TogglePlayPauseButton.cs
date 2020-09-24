@@ -7,7 +7,7 @@ public class TogglePlayPauseButton : MonoBehaviour
 {
     private Button button;
     private Image image;
-    private bool isPaused;
+    public VideoPlayerController videoPlayer;
     private Sprite playImage, pauseImage;
 
     void Start()
@@ -17,28 +17,29 @@ public class TogglePlayPauseButton : MonoBehaviour
 
         image = GetComponent<Image>();
 
-        isPaused = false;   // The video is playing at the beginning.
-        
-        // Load images for the play and pause button
-        playImage = Resources.Load<Sprite>("Sprites/PlayButton") as Sprite;
-        pauseImage = Resources.Load<Sprite>("Sprites/PauseButton") as Sprite;
+        LoadImages();
     }
 
     // Toggle the image of the play and pause button when clicked
     // to indicate what action it will take: play or pause.
     private void ToggleImage(){
         // The video is paused.
-        if(!isPaused){
+        if(!videoPlayer.IsPaused){
             image.sprite = playImage;
-            isPaused = true;
-            return;
         }
 
         // The video is resuming.
-        if(isPaused){
+        if(videoPlayer.IsPaused){
             image.sprite = pauseImage;
-            isPaused = false;
-            return;
         }
+
+        // Change video status.
+        videoPlayer.ToggleVideoStatus();
+    }
+
+    // Load images for the play and pause button
+    private void LoadImages(){
+        playImage = Resources.Load<Sprite>("Sprites/PlayButton") as Sprite;
+        pauseImage = Resources.Load<Sprite>("Sprites/PauseButton") as Sprite;
     }
 }
